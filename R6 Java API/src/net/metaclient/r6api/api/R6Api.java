@@ -59,9 +59,35 @@ public class R6Api implements R6ApiImpl {
 	}
 
 	@Override
-	public ProfilePlayer getProfilePlayerById() {
-		return null;
-	}
+	public ProfilePlayer getProfilePlayerById(String id) {
+		try {
+			HttpGet request = null;
+
+	        try {
+
+	            HttpClient client = HttpClientBuilder.create().build();
+	            request = new HttpGet("https://r6.apitab.com/player/" + id);
+
+	            request.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36 OPR/68.0.3618.206");
+	            HttpResponse response = client.execute(request);
+	            
+	            HttpEntity entity = response.getEntity();
+	            JsonObject obj = new JsonParser().parse(EntityUtils.toString(entity)).getAsJsonObject();
+	            JsonObject profileObj = obj.getAsJsonObject("player").getAsJsonObject();
+
+	            return new ProfilePlayer(id, profileObj.get("p_name").getAsString(), profileObj.get("p_platform").getAsString(), obj.get("custom").getAsJsonObject().get("verified").getAsBoolean());
+	      
+	        } finally {
+
+	            if (request != null) {
+
+	                request.releaseConnection();
+	            }
+	        }
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;	}
 
 	@Override
 	public Player getPlayerByProfile(ProfilePlayer pp) {

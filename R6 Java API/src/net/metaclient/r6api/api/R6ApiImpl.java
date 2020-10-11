@@ -6,7 +6,7 @@ import net.metaclient.r6api.entity.ProfilePlayer;
 public interface R6ApiImpl {
 	
 	ProfilePlayer getProfilePlayerByName(String name);
-	ProfilePlayer getProfilePlayerById();
+	ProfilePlayer getProfilePlayerById(String id);
 	
 	Player getPlayerByProfile(ProfilePlayer pp);
 
