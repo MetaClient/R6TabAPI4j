@@ -1,2 +1,2 @@
 # R6TabAPI4j
-Depracted
+Deprecated
